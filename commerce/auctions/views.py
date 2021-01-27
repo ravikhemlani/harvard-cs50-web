@@ -244,6 +244,7 @@ def close_bid(request, id):
 
 @login_required
 def bids_won(request):
-    items_won = AuctionListing.closed.filter(bids__buyer=request.user).distinct()
+    # items_won = AuctionListing.closed.filter(bids__buyer=request.user).distinct()
+    items_won = AuctionListing.closed.filter(winner=request.user)
     return render(request, "auctions/bidswon.html", {"listings": items_won})
 

@@ -1,0 +1,47 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+{% block body %}
+    <h2>Create a New Listing</h2>
+    <form method="post" id="create_form" autocomplete="off">
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                {{ form.title.label }}
+                {{ form.title }}
+                {% if form.title.errors %}
+                    <div class="alert alert-danger">
+                        {{ form.title.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="form-group col-md-4">
+                {{ form.category.label }}
+                {{ form.category }}
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-2">
+                {{ form.starting_bid.label }}
+                {{ form.starting_bid }}
+                {% if form.bid.errors %}
+                    <div class="alert alert-danger">
+                        {{ form.bid.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="form-group col-md-6">
+                {{ form.image.label }}
+                {{ form.image }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-8">
+                {{ form.description.label }}
+                {{ form.description }}
+            </div>
+        </div>
+    <button class="btn btn-info" type="submit" id="submitbtn">Create</button>
+    </form>
+
+{% endblock body %}

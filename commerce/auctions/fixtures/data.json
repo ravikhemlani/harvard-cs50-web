@@ -1,0 +1,23 @@
+[
+  {
+    "model": "auctions.Categories",
+    "pk": 1,
+    "fields": {
+      "title": "Office Supplies"
+    }
+  },
+  {
+    "model": "auctions.Categories",
+    "pk": 2,
+    "fields": {
+      "title": "IT Equipment"
+    }
+  },
+  {
+    "model": "auctions.Categories",
+    "pk": 3,
+    "fields": {
+      "title": "Books"
+    }
+  }
+]

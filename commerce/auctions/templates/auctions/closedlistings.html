@@ -1,0 +1,59 @@
+{% extends "auctions/layout.html" %}
+
+
+{% block body %}
+<style>
+    .img-container{
+        height:250px;
+    }
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+    .card-title a{
+        color: #17a2b8;
+    }
+    .price {
+        font-style: italic;
+        color: darkred;
+    }
+
+</style>
+
+<h2><span>Sold Listings
+    <button class="btn btn-secondary btn-sm">Today</button>
+    <button class="btn btn-secondary btn-sm">This Week</button>
+    <button class="btn btn-secondary btn-sm">This Month</button></span></h2>
+
+
+
+
+
+<div class="container">
+    <div class="row">
+        {% for listing in listings %}
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title"><a href="{% url 'item' listing.slug %}">{{ listing.title }}</a></h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Sold for: <span class="price">${{ listing.current_price }}</span> to {{ listing.winner }}</h6>
+                    </div>
+                    <div class="img-container">
+                        <img class="card-img-top" src="https://i.picsum.photos/id/607/200/300.jpg?hmac=ZEvzqI62NudR3rgqTkRZzFnlEeOt9z-b_i8VdLoTgoI" alt="Card image cap">
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text text-muted">{{ listing.description }}</p>
+                        <div class="text-right"><a href="{% url 'item' listing.slug %}" class="btn btn-outline-info btn-sm">View</a></div>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted text-left">Listed by: {{ listing.seller }}</small>
+                        <small class="text-muted tex-right">Sold on: </small>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

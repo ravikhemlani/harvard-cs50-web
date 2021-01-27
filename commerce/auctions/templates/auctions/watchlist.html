@@ -1,0 +1,16 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>My Watchlist</h2>
+    <div class="container">
+        <div class="row">
+            {% for listing in listings %}
+                <div class="col-md-4">
+                    {% include "auctions/listing_template.html" %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {{ number }}
+
+{% endblock %}

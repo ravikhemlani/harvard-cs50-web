@@ -1,0 +1,103 @@
+{% extends "auctions/layout.html" %}
+{% block body%}
+    <div class="col-md-12">
+        <h2>{{ listing.title }} - sold by {{ listing.seller }}</h2>
+        {% if user.is_authenticated %}
+
+            {% if watched %}
+                <a class="btn btn-warning" href="{% url 'watch' listing.id %}">Remove from Watchlist</a>
+            {% else %}
+                <a class="btn btn-warning" href="{% url 'watch' listing.id %}">Add to Watchlist</a>
+            {% endif %}
+
+
+            {% if liked %}
+                <a class="btn btn-info" href="{% url 'like' listing.id %}">UnLike</a>
+            {% else %}
+                <a class="btn btn-info" href="{% url 'like' listing.id %}">Like</a>
+            {% endif %}
+            <ul>
+                liked by:
+                {% for user in liked_by %}
+                    <li>{{ user }}</li>
+                {% endfor %}
+            </ul>
+            <p>{{ listing.number_of_likes }} Like{{ listing.number_of_likes|pluralize }}</p>
+
+            {% if listing.bidding_open %}
+
+                <div id="bidding section">
+                <h4>Starting Bid: <strong>${{ listing.starting_bid }}</strong></h4>
+                <h4>Current Price: <strong>${{ listing.current_price }}</strong></h4>
+                <h5>{{ listing.num_of_bids }}Bids</h5>
+                {% if listing.seller == request.user %}
+                    <form action="{% url 'close' listing.id %}" method="POST">
+                        {% csrf_token %}
+                        <input class="btn btn-danger remove col-md-2" name="close" type="submit" value="End Bidding">
+                    </form>
+                {% else %}
+                    <form action="{% url 'bid' listing.id %}" method="POST">
+                        {% csrf_token %}
+                        <div class="form-group" id="bid_form">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">$</div>
+                                </div>
+                                <input class="form-control col-md-2" type="number" min="0.01" step="0.01" name="bid_amount" placeholder="Enter Bid Amount">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input class="btn btn-danger bid col-md-2" type="submit" value="Bid">
+                        </div>
+                    </form>
+                {% endif %}
+            {% else %}
+                <button type="button" class="btn btn-danger col-md-2" disabled>Bidding Ended</button>
+                {% if listing.num_of_bids > 0 %}
+                    <h3>Sold for {{ listing.current_price }}</h3>
+                {% else %}
+                    <h3>Closed without any bids</h3>
+                {% endif %}
+
+            {% endif %}
+
+
+            </div>
+
+            <h3>Comments</h3>
+
+            <div id="comments_section">
+                {% if listing.bidding_open %}
+                <form method="POST" action="{% url 'item' listing.slug %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{ comment_form }}
+                        <button class="btn btn-info" type="submit">Add Comment <i class="fas fa-comments"></i></button>
+                    </div>
+                </form>
+                {% endif %}
+                {% if comments %}
+                    <strong class="text-secondary">{{ listing.number_of_comments }} Comment{{ listing.number_of_comments|pluralize }}</strong>
+                    <hr>
+                    <ul>
+                        {% for comment in comments %}
+                            <li>
+                                <div>
+                                        <span>
+                                            <strong class="text-info">{{ comment.author }}</strong>
+                                            <small class="text-muted">{{ comment.timestamp }}</small>
+                                        </span>
+                                    <p>{{ comment.content|safe }}</p>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <strong class="text-secondary">No Comments</strong>
+                {% endif %}
+            </div>
+        {% endif %}
+
+
+    </div>
+{% endblock %}
